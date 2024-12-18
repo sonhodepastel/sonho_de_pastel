@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonho de Pastel - Pizzaria</title>
+    <style>
+        /* Estilo Geral */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #fff8f0;
+        }
+
+        header {
+            background-color: #d32f2f;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            color: #fff;
+        }
+
+        header .logo img {
+            height: 60px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .banner {
+            background-color: #d32f2f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .banner h1 {
+            font-size: 36px;
+        }
+
+        .banner p {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        #menu, #about, #contact {
+            padding: 20px;
+            text-align: center;
+        }
+
+        #menu h2, #about h2, #contact h2 {
+            color: #d32f2f;
+            margin-bottom: 10px;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            width: 200px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .item h3 {
+            color: #d32f2f;
+            font-size: 18px;
+        }
+
+        .item p {
+            margin-top: 5px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .whatsapp-button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #25d366;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: #d32f2f;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <header>
+        <div class="logo">
+            <img src="https://via.placeholder.com/S_20241208_183235_0000.png" alt="Logo Sonho de Pastel">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Início</a></li>
+                <li><a href="#menu">Cardápio</a></li>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Seção de Início -->
+    <section id="home" class="banner">
+        <div>
+            <h1>Bem-vindo ao Sonho de Pastel</h1>
+            <p>Crocante, saboroso e irresistível!</p>
+        </div>
+    </section>
+
+    <!-- Cardápio -->
+    <section id="menu">
+        <h2>Nosso Cardápio</h2>
+        <div class="menu-items">
+            <div class="item">
+                <h3>Pizza Marguerita</h3>
+                <p>R$ 35,00</p>
+            </div>
+            <div class="item">
+                <h3>Pizza Calabresa</h3>
+                <p>R$ 38,00</p>
+            </div>
+            <div class="item">
+                <h3>Refrigerante 1L</h3>
+                <p>R$ 8,00</p>
+            </div>
+            <div class="item">
+                <h3>Água Mineral</h3>
+                <p>R$ 5,00</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre -->
+    <section id="about">
+        <h2>Sobre Nós</h2>
+        <p>Somos uma pizzaria apaixonada por entregar o melhor sabor para nossos clientes. Cada pedido é preparado com ingredientes frescos e muito carinho!</p>
+    </section>
+
+    <!-- Contato -->
+    <section id="contact">
+        <h2>Fale Conosco</h2>
+        <p>Telefone: (85) 99453-0854</p>
+        <p>Endereço: Rua da Pizzaria, 123 - Fortaleza, CE</p>
+        <a href="https://wa.me/5585994530854" class="whatsapp-button" target="_blank">Peça pelo WhatsApp</a>
+    </section>
+
+    <!-- Rodapé -->
+    <footer>
+        <p>&copy; 2024 Sonho de Pastel. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
