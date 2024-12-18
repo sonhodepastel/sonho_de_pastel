@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio - Nato Pizza</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+        header {
+            background-color: #e63946;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+        .container {
+            padding: 20px;
+        }
+        .menu-item {
+            background: #fff;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background-color: #28a745;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cardápio - Nato Pizza</h1>
+    </header>
+
+    <div class="container">
+        <div class="menu-item">
+            <strong>BIB'S NATO 1</strong> - R$ 15,00<br>
+            <button onclick="addToOrder('BIB\\'S NATO 1', 15.00)">Adicionar</button>
+        </div>
+        <div class="menu-item">
+            <strong>PIZZA SIMPLES</strong> - R$ 24,90<br>
+            <button onclick="addToOrder('PIZZA SIMPLES', 24.90)">Adicionar</button>
+        </div>
+        <div class="menu-item">
+            <strong>CALZONE DE FRANGO</strong> - R$ 11,90<br>
+            <button onclick="addToOrder('CALZONE DE FRANGO', 11.90)">Adicionar</button>
+        </div>
+        <div class="menu-item">
+            <strong>CALZONE CALABRESA</strong> - R$ 11,90<br>
+            <button onclick="addToOrder('CALZONE CALABRESA', 11.90)">Adicionar</button>
+        </div>
+        <div class="menu-item">
+            <strong>CALZONE CHOCOLATE</strong> - R$ 14,90<br>
+            <button onclick="addToOrder('CALZONE CHOCOLATE', 14.90)">Adicionar</button>
+        </div>
+    </div>
+
+    <script>
+        function addToOrder(item, price) {
+            const order = JSON.parse(localStorage.getItem('orders')) || [];
+            order.push({ name: item, price: price, time: new Date().toLocaleString() });
+            localStorage.setItem('orders', JSON.stringify(order));
+            alert(item + ' adicionado ao pedido!');
+        }
+    </script>
+</body>
+</html>
