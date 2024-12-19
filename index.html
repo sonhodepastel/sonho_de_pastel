@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Financeiro</title>
+    <style>
+      body {
+    font-family: Arial, sans-serif;
+    background-color: #004d00; /* Fundo verde escuro */
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.form-group input:focus, .form-group select:focus {
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    border-color: #28a745;
+}
+
+.alert {
+    color: red;
+    font-weight: bold;
+    display: none;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.expenses-list {
+    margin-top: 20px;
+    padding: 0;
+    list-style-type: none;
+}
+
+.expenses-list li {
+    background: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-left: 5px solid #ff6b6b;
+    border-radius: 4px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.indicator {
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 4px;
+    animation: blink 1s infinite;
+    color: #fff;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.btn-pdf {
+    background-color: #007bff;
+}
+
+.btn-pdf:hover {
+    background-color: #0056b3;
+}
+
+.totals {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+}
+
+.form-group.date-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.form-group.date-filter label {
+    margin-right: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group.date-filter input {
+    width: 45%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.form-group.date-filter button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.form-group.date-filter button:hover {
+    background-color: #218838;
+}
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Controle Financeiro</h1>
+        <!-- Formulário -->
+        <div class="form-group">
+            <label for="description">Descrição:</label>
+            <input type="text" id="description">
+        </div>
+        <div class="form-group">
+            <label for="amount">Valor (R$):</label>
+            <input type="number" id="amount">
+        </div>
+        <div class="form-group">
+            <label for="type">Tipo:</label>
+            <select id="type">
+                <option value="entrada">Entrada</option>
+                <option value="saida">Saída</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="date">Data:</label>
+            <input type="date" id="date">
+        </div>
+        <div class="button-group">
+            <button onclick="addTransaction()">Adicionar Transação</button>
+            <button class="btn-pdf" onclick="generatePDF()">Gerar Relatório PDF</button>
+        </div>
+        <!-- Filtro por data com calendário -->
+        <div class="form-group date-filter">
+            <label for="start-date">De:</label>
+            <input type="date" id="start-date">
+            <label for="end-date">Até:</label>
+            <input type="date" id="end-date">
+            <button onclick="filterByDate()">Filtrar</button>
+        </div>
+        <p class="alert" id="alert">Atenção: Suas finanças estão no vermelho!</p>
+        <ul class="expenses-list" id="expenses-list"></ul>
+        <div class="totals">
+            <div>Total de Entradas: R$ <span id="total-entrada">0.00</span></div>
+            <div>Total de Saídas: R$ <span id="total-saida">0.00</span></div>
+        </div>
+        <div class="indicator" id="indicator">Saúde Financeira: Saudável</div>
+    </div>
+
+    <script>
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        const EXPIRATION_DAYS = 30;
+
+        // Função para adicionar transação
+        function addTransaction() {
+            const description = document.getElementById('description').value.trim();
+            const amount = parseFloat(document.getElementById('amount').value);
+            const type = document.getElementById('type').value;
+            const date = document.getElementById('date').value;
+
+            if (!description || !amount || !date || amount <= 0) {
+                alert("Preencha todos os campos corretamente.");
+                return;
+            }
+
+            const transaction = { 
+                description, 
+                amount, 
+                type, 
+                date: new Date(date).toISOString(), 
+                timestamp: Date.now() 
+            };
+
+            transactions.push(transaction);
+            saveTransactions();
+            updateDisplay();
+            clearForm();
+        }
+
+        // Função para salvar transações no localStorage
+        function saveTransactions() {
+            transactions = transactions.filter(tx => !isExpired(tx.timestamp));
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+        }
+
+        // Verifica se o registro expirou
+        function isExpired(timestamp) {
+            const now = Date.now();
+            return (now - timestamp) > (EXPIRATION_DAYS * 24 * 60 * 60 * 1000);
+        }
+
+        // Atualiza exibição das transações
+        function updateDisplay() {
+            const expensesList = document.getElementById('expenses-list');
+            expensesList.innerHTML = '';
+            let totalEntrada = 0;
+            let totalSaida = 0;
+
+            transactions.forEach(transaction => {
+                const li = document.createElement('li');
+                li.textContent = `${transaction.description}: R$ ${transaction.amount.toFixed(2)} (${transaction.type}) - ${new Date(transaction.date).toLocaleDateString()}`;
+                expensesList.appendChild(li);
+
+                if (transaction.type === 'entrada') {
+                    totalEntrada += transaction.amount;
+                } else {
+                    totalSaida += transaction.amount;
+                }
+            });
+
+            document.getElementById('total-entrada').textContent = totalEntrada.toFixed(2);
+            document.getElementById('total-saida').textContent = totalSaida.toFixed(2);
+            updateIndicator(totalEntrada - totalSaida);
+        }
+
+        // Atualiza o indicador de saúde financeira
+        function updateIndicator(balance) {
+            const indicator = document.getElementById('indicator');
+            const alert = document.getElementById('alert');
+
+            if (balance < 0) {
+                alert.style.display = 'block';
+                indicator.style.backgroundColor = 'red';
+                indicator.textContent = 'Saúde Financeira: Em Risco';
+            } else if (balance < 100) {
+                alert.style.display = 'none';
+                indicator.style.backgroundColor = 'yellow';
+                indicator.textContent = 'Saúde Financeira: Atenção';
+            } else {
+                alert.style.display = 'none';
+                indicator.style.backgroundColor = 'green';
+                indicator.textContent = 'Saúde Financeira: Saudável';
+            }
+        }
+
+        // Função para filtrar por data
+        function filterByDate() {
+            const startDate = new Date(document.getElementById('start-date').value);
+            const endDate = new Date(document.getElementById('end-date').value);
+            const filteredTransactions = transactions.filter(transaction => {
+                const transactionDate = new Date(transaction.date);
+                return transactionDate >= startDate && transactionDate <= endDate;
+            });
+            displayFilteredTransactions(filteredTransactions);
+        }
+
+        function displayFilteredTransactions(filteredTransactions) {
+            const expensesList = document.getElementById('expenses-list');
+            expensesList.innerHTML = '';
+
+            filteredTransactions.forEach(transaction => {
+                const li = document.createElement('li');
+                li.textContent = `${transaction.description}: R$ ${transaction.amount.toFixed(2)} (${transaction.type}) - ${new Date(transaction.date).toLocaleDateString()}`;
+                expensesList.appendChild(li);
+            });
+        }
+
+        // Limpa o formulário
+        function clearForm() {
+            document.getElementById('description').value = '';
+            document.getElementById('amount').value = '';
+            document.getElementById('type').value = 'entrada';
+            document.getElementById('date').value = '';
+        }
+
+        // Gera o relatório em PDF
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text("Relatório de Transações", 10, 10);
+
+            let y = 20;
+            transactions.forEach(transaction => {
+                doc.text(`${transaction.description}: R$ ${transaction.amount.toFixed(2)} (${transaction.type}) - ${new Date(transaction.date).toLocaleDateString()}`, 10, y);
+                y += 10;
+            });
+
+            doc.save("relatorio_financeiro.pdf");
+        }
+
+        // Atualiza automaticamente ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            transactions = transactions.filter(tx => !isExpired(tx.timestamp));
+            saveTransactions();
+            updateDisplay();
+        });
+    </script>
+</body>
+</html>
