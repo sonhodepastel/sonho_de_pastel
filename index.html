@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento PIX</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        #qrcode {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #confirmation {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+</head>
+<body>
+    <h1>Pagamento PIX</h1>
+    <div id="qrcode"></div>
+    <button onclick="generatePayment()">Gerar Pagamento</button>
+    <button onclick="copyPixKey()">Copiar Chave PIX</button>
+    <p id="confirmation" style="color: green;"></p>
+    <script>
+        // Chave PIX
+        const pixKey = "00020126580014br.gov.bcb.pix01362a792c9d-5bd1-4076-b2ff-2b6c76b19aaa5204000053039865802BR5920Alex Da Silva Dantas6009Sao Paulo62290525REC676432E3AA8C2424736967630457D2";
+        const pixValue = "20.00"; // Valor em reais
+
+        // Função para gerar QR Code com valor definido
+        function generatePayment() {
+            const pixData = `${pixKey}520400005303986540${pixValue}5802BR`;
+            QRCode.toCanvas(document.getElementById('qrcode'), pixData, function (error) {
+                if (error) console.error(error);
+                console.log('QR Code gerado com sucesso!');
+            });
+        }
+
+        // Função para copiar a chave PIX
+        function copyPixKey() {
+            navigator.clipboard.writeText(pixKey).then(function() {
+                document.getElementById('confirmation').innerText = 'Chave PIX copiada com sucesso!';
+            }, function(err) {
+                console.error('Erro ao copiar a chave PIX: ', err);
+            });
+        }
+    </script>
+</body>
+</html>
