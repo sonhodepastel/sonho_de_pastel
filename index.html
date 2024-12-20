@@ -4,8 +4,181 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cardápio Digital</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #ff0000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 10px;
+            padding: 20px;
+            text-align: center;
+            width: 200px;
+        }
+
+        .item img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .item h2 {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        .item p {
+            font-size: 1em;
+            margin: 10px 0;
+        }
+
+        .item span {
+            font-size: 1.2em;
+            color: #ff0000;
+        }
+
+        .item button {
+            background-color: #ff0000;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .cart {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .cart h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .cart ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .cart li {
+            margin: 10px 0;
+        }
+
+        .cart form {
+            margin-top: 20px;
+        }
+
+        .cart form label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        .cart form input, .cart form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .cart form button {
+            background-color: #25d366;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* Ajustes para telas menores */
+        @media (max-width: 600px) {
+            .menu {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .item {
+                width: 90%;
+            }
+        }
+
+        /* Estilos para a janela sobreposta do Pix */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .modal-content button {
+            background-color: #25d366;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -75,6 +248,87 @@
             <button onclick="copyPixKey()">Copiar Chave Pix</button>
         </div>
     </div>
-    <script src="scripts.js"></script>
+    <script>
+        let cart = [];
+        let total = 0;
+
+        function addToCart(item, price) {
+            cart.push({ item, price });
+            total += price;
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = '';
+            cart.forEach(cartItem => {
+                const li = document.createElement('li');
+                li.textContent = `${cartItem.item} - R$ ${cartItem.price.toFixed(2)}`;
+                cartItems.appendChild(li);
+            });
+            document.getElementById('total').textContent = total.toFixed(2);
+        }
+
+        function sendOrder() {
+            const name = document.getElementById('name').value;
+            const address = document.getElementById('address').value;
+            const phone = document.getElementById('phone').value;
+            const payment = document.getElementById('payment').value;
+            const troco = document.getElementById('troco').value;
+
+                        orderMessage += `*Itens do Pedido:*\n`;
+            cart.forEach(cartItem => {
+                orderMessage += `- ${cartItem.item}: R$ ${cartItem.price.toFixed(2)}\n`;
+            });
+            orderMessage += `\n*Total:* R$ ${total.toFixed(2)}\n\n`;
+            orderMessage += `*Dados do Cliente:*\n`;
+            orderMessage += `Nome: ${name}\n`;
+            orderMessage += `Endereço: ${address}\n`;
+            orderMessage += `Telefone: ${phone}\n`;
+            orderMessage += `Método de Pagamento: ${payment}\n`;
+            if (payment === 'dinheiro' && troco) {
+                orderMessage += `Precisa de troco para: R$ ${troco}\n`;
+            }
+
+            const whatsappUrl = `https://wa.me/5585994530854?text=${encodeURIComponent(orderMessage)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function checkPaymentMethod() {
+            const payment = document.getElementById('payment').value;
+            if (payment === 'pix') {
+                generatePixQRCode(total);
+            }
+        }
+
+        function generatePixQRCode(amount) {
+            const pixUrl = `https://link.gerarpix.com.br/p/pagamento-do-pedido-1c189faf?valor=${amount.toFixed(2)}`;
+            document.getElementById('pix-qrcode').src = pixUrl;
+            document.getElementById('pix-modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('pix-modal').style.display = 'none';
+        }
+
+        function copyPixKey() {
+            const pixKey = '5585994530854';
+            navigator.clipboard.writeText(pixKey).then(() => {
+                alert('Chave Pix copiada!');
+            });
+        }
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registrado com sucesso:', registration);
+                    })
+                    .catch(error => {
+                        console.log('Falha ao registrar o ServiceWorker:', error);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>
