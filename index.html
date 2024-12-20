@@ -188,10 +188,10 @@
         <section class="menu">
             <div class="item">
                 <img src="prato1.jpg" alt="Prato 1">
-                <h2>Prato 1</h2>
-                <p>Descrição do prato 1</p>
-                <span>R$ 25,00</span>
-                <button onclick="addToCart('Prato 1', 25)">Adicionar à Sacola</button>
+                <h2>Pastel de carne</h2>
+                <p>Carne moida bem temperada,azeitona</p>
+                <span>R$ 16,50,00</span>
+                <button onclick="addToCart('Pastel de carne', 25)">Adicionar à Sacola</button>
             </div>
             <div class="item">
                 <img src="prato2.jpg" alt="Prato 2">
@@ -244,7 +244,7 @@
             <span class="close" onclick="closeModal()">×</span>
             <h2>Pagamento via Pix</h2>
             <img id="pix-qrcode" src="" alt="QR Code Pix">
-            <p>Chave Pix: 5585994530854</p>
+            <p>Chave Pix:85994530854</p>
             <button onclick="copyPixKey()">Copiar Chave Pix</button>
         </div>
     </div>
@@ -281,7 +281,7 @@
                 orderMessage += `- ${cartItem.item}: R$ ${cartItem.price.toFixed(2)}\n`;
             });
             orderMessage += `\n*Total:* R$ ${total.toFixed(2)}\n\n`;
-            orderMessage += `*Dados do Cliente:*\n`;
+            orderMessage += `*${name}:*\n`;
             orderMessage += `Nome: ${name}\n`;
             orderMessage += `Endereço: ${address}\n`;
             orderMessage += `Telefone: ${phone}\n`;
@@ -302,7 +302,7 @@
         }
 
         function generatePixQRCode(amount) {
-            const pixUrl = `https://link.gerarpix.com.br/p/pagamento-do-pedido-1c189faf?valor=${amount.toFixed(2)}`;
+            const pixUrl = '85994530854?valor=${amount.toFixed(2)}`;
             document.getElementById('pix-qrcode').src = pixUrl;
             document.getElementById('pix-modal').style.display = 'block';
         }
