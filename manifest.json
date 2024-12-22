@@ -1,6 +1,6 @@
 {
-  "name": "Cardápio Interativo",
-  "short_name": "Cardápio",
+  "name": "SONHO DE PASTEL",
+  "short_name": "PASTEL",
   "description": "Cardápio interativo para pedidos via WhatsApp.",
   "start_url": "index.html",
   "display": "standalone",
