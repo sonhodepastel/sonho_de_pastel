@@ -281,113 +281,80 @@
 
     <button onclick="sendOrder()">Enviar Pedido</button>
 </div>
-
 <script>
-    
+let cart = [];
+let total = 0;
 
-// Exemplo de como adicionar itens ao total:
-function addItemToCart(price) {
-    total += price;
-    updateCartTotal();
-}
-
-// Exemplo de como remover itens do total:
-function removeItemFromCart(price) {
-    total -= price;
-    updateCartTotal();
-}
-
-    let cart = [];
-
-    function addToCart(item, price) {
-        const id = cart.length + 1;
-        cart.push({ id, item, price });
-        updateCartSummary();
-        let total = 0;
-
+// Atualiza o total da sacola
 function updateCartTotal() {
     const cartTotalElement = document.getElementById("cart-total");
     cartTotalElement.textContent = `Total: R$ ${total.toFixed(2)}`;
 }
-    }
 
-    function updateCartSummary() {
-        const summary = document.querySelector('.cart-summary');
-        summary.innerHTML = '';
-        cart.forEach(({ id, item, price }) => {
-            const div = document.createElement('div');
-            div.innerHTML = `${item} - R$ ${price.toFixed(2)} <button onclick="removeFromCart(${id})">Remover</button>`;
-            summary.appendChild(div);
-        });
-    }
+// Adiciona um item à sacola
+function addItemToCart(name, price) {
+    cart.push({ name, price });
+    total += price;
+    updateCart();
+}
 
-    function removeFromCart(id) {
-        cart = cart.filter(item => item.id !== id);
-        updateCartSummary();
-    }
+// Remove um item da sacola
+function removeItemFromCart(index) {
+    total -= cart[index].price;
+    cart.splice(index, 1);
+    updateCart();
+}
 
-    function handlePayment(method) {
-        document.getElementById('pixInfo').style.display = method === 'pix' ? 'block' : 'none';
-        document.getElementById('moneyInfo').style.display = method === 'dinheiro' ? 'block' : 'none';
-    }
+// Atualiza o conteúdo da sacola
+function updateCart() {
+    const cartDetails = document.getElementById("cart-details");
+    cartDetails.innerHTML = "";
 
-    function handleDelivery(method) {
-        document.getElementById('deliveryInfo').style.display = method === 'delivery' ? 'block' : 'none';
-        document.getElementById('pickupInfo').style.display = method === 'retirada' ? 'block' : 'none';
-    }
-
-    function copyPix() {
-        navigator.clipboard.writeText('071.315.084-03');
-        alert('Chave Pix copiada!');
-    }
-
-    function sendOrder() {
-        const payment = document.querySelector('input[name="payment"]:checked');
-        const delivery = document.querySelector('input[name="delivery"]:checked');
-
-        if (!payment || !delivery) {
-            alert('Selecione forma de pagamento e entrega!');
-            return;
-        }
-
-        const deliveryDetails = delivery.value === 'delivery'
-            ? `Nome: ${document.getElementById('deliveryName').value}\nRua: ${document.getElementById('deliveryStreet').value}, ${document.getElementById('deliveryNumber').value}\nBairro: ${document.getElementById('deliveryNeighborhood').value}\nTelefone: ${document.getElementById('deliveryPhone').value}`
-            : `Nome: ${document.getElementById('name').value}\nTelefone: ${document.getElementById('phonePickup').value}`;
-
-        const paymentDetails = payment.value === 'pix'
-            ? 'Pix'
-            : payment.value === 'cartao'
-            ? 'Cartão'
-            : `Dinheiro (troco para: R$ ${document.getElementById('troco').value || 'Sem troco'})`;
-
-        const items = cart.map(product => `- ${product.item} - R$ ${product.price.toFixed(2)}`).join('\n');
-        const total = cart.reduce((sum, product) => sum + product.price, 0).toFixed(2);
-
-        const message = `
-🔖 *Resumo do Pedido*:
-${items}
-
-💰 *Total*: R$ ${total}
-🛒 *Forma de Pagamento*: ${paymentDetails}
-
-📦 *Detalhes da ${delivery.value === 'delivery' ? 'Entrega' : 'Retirada'}*:
-${deliveryDetails}
+    cart.forEach((item, index) => {
+        cartDetails.innerHTML += `
+            <div>
+                ${item.name} - R$ ${item.price.toFixed(2)}
+                <button onclick="removeItemFromCart(${index})">Remover</button>
+            </div>
         `;
-
-        window.open(`https://wa.me/5585994530854?text=${encodeURIComponent(message)}`, '_blank');
-    }
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then((registration) => {
-          console.log('Service Worker registrado com sucesso:', registration);
-        })
-        .catch((error) => {
-          console.log('Erro ao registrar o Service Worker:', error);
-        });
     });
-  }
-</script>
 
+    updateCartTotal();
+}
+
+// Finaliza o pedido e envia para o WhatsApp
+function checkout() {
+    if (cart.length === 0) {
+        alert("🛒 Sua sacola está vazia. Adicione itens antes de finalizar o pedido.");
+        return;
+    }
+
+    let message = "📦 *Resumo do Pedido:* \n\n";
+    cart.forEach((item) => {
+        message += `🍴 ${item.name} - R$ ${item.price.toFixed(2)}\n`;
+    });
+    message += `\n💰 *Total:* R$ ${total.toFixed(2)}\n\n`;
+
+    const paymentMethod = prompt("💳 Informe a forma de pagamento (Pix, Dinheiro ou Cartão):");
+    if (paymentMethod) {
+        message += `💳 *Forma de pagamento:* ${paymentMethod}\n`;
+
+        if (paymentMethod.toLowerCase() === "dinheiro") {
+            const troco = prompt("🪙 Precisa de troco? Informe o valor:");
+            if (troco) {
+                message += `🪙 *Troco para:* R$ ${troco}\n`;
+            }
+        }
+    }
+
+    const address = prompt("📍 Informe o endereço para entrega ou escreva *RETIRADA*:");
+    if (address) {
+        message += `📍 *Endereço:* ${address}`;
+    }
+
+    const whatsappUrl = `https://wa.me/5585994530954?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
+}
+</script>
 </body>
 </html>
