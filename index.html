@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </header>
+    <title>Cardápio Interativo</title>
+    <style>
+        /* Estilização do cardápio */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        header {
+            background-color: #ff0000;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .category {
+            max-width: 100%;
+            margin: 40px auto;
+        }
+
+        .category-title {
+            background-color: #262626;
+            color: white;
+            padding: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .menu-item {
+            background: #262626;
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            flex: 0 0 calc(33.333% - 20px);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            max-width: 300px;
+            margin: 0 10px;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .menu-item h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+        }
+
+        .menu-item p {
+            margin: 5px 0 15px;
+            font-size: 16px;
+        }
+
+        .menu-item button {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .menu-item button:hover {
+            background-color: #cc0000;
+        }
+
+        .cart {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #262626;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .cart h2 {
+            margin-top: 0;
+        }
+
+        .cart-summary {
+            margin: 20px 0;
+        }
+
+        .cart-summary div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .cart-summary div button {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .cart-summary div button:hover {
+            background-color: #cc0000;
+        }
+
+        .payment-method, .delivery-method {
+            margin-top: 20px;
+        }
+
+        .payment-method label, .delivery-method label {
+            display: block;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .additional-info {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .additional-info input, .additional-info textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto 0;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #cc0000;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .menu-item {
+                flex: 0 0 calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-item {
+                flex: 0 0 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    Cardápio Interativo
+</header>
+
+<!-- Categorias do Cardápio -->
+<div class="category">
+    <div class="category-title">Pizzas</div>
+    <div class="menu">
+        <div class="menu-item">
+            <img src="https://via.placeholder.com/150?text=Pizza+Calabresa" alt="Pizza de Calabresa">
+            <h3>Pizza de Calabresa</h3>
+            <p>Deliciosa pizza com calabresa, queijo e molho especial.</p>
+            <p>R$ 30,00</p>
+            <button onclick="addToCart('Pizza de Calabresa', 30)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://via.placeholder.com/150?text=Pizza+Frango" alt="Pizza de Frango">
+            <h3>Pizza de Frango</h3>
+            <p>Pizza com frango desfiado, catupiry e milho.</p>
+            <p>R$ 32,00</p>
+            <button onclick="addToCart('Pizza de Frango', 32)">Adicionar ao Carrinho</button>
+        </div>
+    </div>
+</div>
+
+<div class="category">
+    <div class="category-title">Bebidas</div>
+    <div class="menu">
+        <div class="menu-item">
+            <img src="https://via.placeholder.com/150?text=Refrigerante" alt="Refrigerante">
+            <h3>Refrigerante</h3>
+            <p>Escolha entre Coca-Cola, Fanta e Sprite.</p>
+            <p>R$ 7,00</p>
+            <button onclick="addToCart('Refrigerante', 7)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://via.placeholder.com/150?text=Suco" alt="Suco Natural">
+            <h3>Suco Natural</h3>
+            <p>Suco natural de laranja ou abacaxi.</p>
+            <p>R$ 6,00</p>
+            <button onclick="addToCart('Suco Natural', 6)">Adicionar ao Carrinho</button>
+        </div>
+    </div>
+</div>
+
+<div class="cart">
+    <h2>Resumo do Pedido</h2>
+    <div class="cart-summary"></div>
+
+    <div class="payment-method">
+        <h3>Forma de Pagamento</h3>
+        <label><input type="radio" name="payment" value="pix" onclick="handlePayment('pix')"> Pix</label>
+        <label><input type="radio" name="payment" value="cartao" onclick="handlePayment('cartao')"> Cartão</label>
+        <label><input type="radio" name="payment" value="dinheiro" onclick="handlePayment('dinheiro')"> Dinheiro</label>
+        <div id="pixInfo" style="display: none;">
+            <p>Chave Pix: <strong>071.315.084-03</strong> <button onclick="copyPix()">Copiar</button></p>
+        </div>
+        <div id="moneyInfo" style="display: none;">
+            <input type="text" id="troco" placeholder="Troco para quanto?">
+        </div>
+    </div>
+
+    <div class="delivery-method">
+        <h3>Forma de Entrega</h3>
+        <label><input type="radio" name="delivery" value="delivery" onclick="handleDelivery('delivery')"> Delivery</label>
+        <label><input type="radio" name="delivery" value="retirada" onclick="handleDelivery('retirada')"> Retirada</label>
+    </div>
+
+    <div class="additional-info" id="deliveryInfo">
+        <h3>Informações para Entrega</h3>
+        <input type="text" id="deliveryName" placeholder="Nome">
+        <input type="text" id="deliveryStreet" placeholder="Rua">
+        <input type="text" id="deliveryNumber" placeholder="Número">
+        <input type="text" id="deliveryPhone" placeholder="Telefone">
+        <input type="text" id="deliveryNeighborhood" placeholder="Bairro">
+    </div>
+
+    <div class="additional-info" id="pickupInfo">
+        <h3>Informações para Retirada</h3>
+        <input type="text" id="name" placeholder="Nome">
+        <input type="text" id="phonePickup" placeholder="Telefone">
+    </div>
+
+    <button onclick="sendOrder()">Enviar Pedido</button>
+</div>
+
+<script>
+    let cart = [];
+    let total = 0;
+
+    // Atualiza o total da sacola
+    function updateCartTotal() {
+        const cartTotalElement = document.getElementById("cart-total");
+        cartTotalElement.textContent = `Total: R$ ${total.toFixed(2)}`;
+    }
+
+    // Adiciona um item à sacola
+    function addToCart(item, price) {
+        const id = cart.length + 1;
+        cart.push({ id, item, price });
+        total += price;  // Atualiza o total da sacola
+        updateCartSummary();
+        updateCartTotal();  // Atualiza o valor total
+    }
+
+    // Atualiza o resumo da sacola
+    function updateCartSummary() {
+        const summary = document.querySelector('.cart-summary');
+        summary.innerHTML = '';
+        cart.forEach(({ id, item, price }) => {
+            const div = document.createElement('div');
+            div.innerHTML = `${item} - R$ ${price.toFixed(2)} <button onclick="removeFromCart(${id})">Remover</button>`;
+            summary.appendChild(div);
+        });
+    }
+
+    // Remove um item da sacola
+    function removeFromCart(id) {
+        const itemToRemove = cart.find(item => item.id === id);
+        total -= itemToRemove.price;  // Subtrai o preço do item removido
+        cart = cart.filter(item => item.id !== id);
+        updateCartSummary();
+        updateCartTotal();  // Atualiza o total da sacola
+    }
+
+    // Exibe informações para cada forma de pagamento
+    function handlePayment(method) {
+        document.getElementById('pixInfo').style.display = method === 'pix' ? 'block' : 'none';
+        document.getElementById('moneyInfo').style.display = method === 'dinheiro' ? 'block' : 'none';
+    }
+
+    // Exibe informações para cada forma de entrega
+    function handleDelivery(method) {
+        document.getElementById('deliveryInfo').style.display = method === 'delivery' ? 'block' : 'none';
+        document.getElementById('pickupInfo').style.display = method === 'retirada' ? 'block' : 'none';
+    }
+
+    // Copia a chave Pix para a área de transferência
+    function copyPix() {
+        navigator.clipboard.writeText('071.315.084-03');
+        alert('Chave Pix copiada!');
+    }
+
+    // Envia o pedido para o WhatsApp
+    function sendOrder() {
+        const payment = document.querySelector('input[name="payment"]:checked');
+        const delivery = document.querySelector('input[name="delivery"]:checked');
+
+        if (!payment || !delivery) {
+            alert('Selecione forma de pagamento e entrega!');
+            return;
+        }
+
+        // Obtém os detalhes de entrega ou retirada
+        const deliveryDetails = delivery.value === 'delivery'
+            ? `Nome: ${document.getElementById('deliveryName').value}\nRua: ${document.getElementById('deliveryStreet').value}, ${document.getElementById('deliveryNumber').value}\nBairro: ${document.getElementById('deliveryNeighborhood').value}\nTelefone: ${document.getElementById('deliveryPhone').value}`
+            : `Nome: ${document.getElementById('name').value}\nTelefone: ${document.getElementById('phonePickup').value}`;
+
+        // Obtém os detalhes de pagamento
+        const paymentDetails = payment.value === 'pix'
+            ? 'Pix'
+            : payment.value === 'cartao'
+            ? 'Cartão'
+            : `Dinheiro (troco para: R$ ${document.getElementById('troco').value || 'Sem troco'})`;
+
+        // Gera a lista de itens
+        const items = cart.map(product => `- ${product.item} - R$ ${product.price.toFixed(2)}`).join('\n');
+        const totalAmount = cart.reduce((sum, product) => sum + product.price, 0).toFixed(2);
+
+        // Monta a mensagem final
+        const message = `
+🔖 *Resumo do Pedido*:
+${items}
+
+💰 *Total*: R$ ${totalAmount}
+🛒 *Forma de Pagamento*: ${paymentDetails}
+
+📦 *Detalhes da ${delivery.value === 'delivery' ? 'Entrega' : 'Retirada'}*:
+${deliveryDetails}
+        `;
+
+        // Envia a mensagem para o WhatsApp
+        window.open(`https://wa.me/5585994530954?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    // Registra o Service Worker para PWA
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then((registration) => {
+                    console.log('Service Worker registrado com sucesso:', registration);
+                })
+                .catch((error) => {
+                    console.log('Erro ao registrar o Service Worker:', error);
+                });
+        });
+    }
+</script>
+>
+
+</body>
+</html>
