@@ -283,6 +283,25 @@
 </div>
 
 <script>
+    let total = 0;
+
+function updateCartTotal() {
+    const cartTotalElement = document.getElementById("cart-total");
+    cartTotalElement.textContent = `Total: R$ ${total.toFixed(2)}`;
+}
+
+// Exemplo de como adicionar itens ao total:
+function addItemToCart(price) {
+    total += price;
+    updateCartTotal();
+}
+
+// Exemplo de como remover itens do total:
+function removeItemFromCart(price) {
+    total -= price;
+    updateCartTotal();
+}
+
     let cart = [];
 
     function addToCart(item, price) {
