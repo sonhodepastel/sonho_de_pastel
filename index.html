@@ -283,12 +283,7 @@
 </div>
 
 <script>
-    let total = 0;
-
-function updateCartTotal() {
-    const cartTotalElement = document.getElementById("cart-total");
-    cartTotalElement.textContent = `Total: R$ ${total.toFixed(2)}`;
-}
+    
 
 // Exemplo de como adicionar itens ao total:
 function addItemToCart(price) {
@@ -308,6 +303,12 @@ function removeItemFromCart(price) {
         const id = cart.length + 1;
         cart.push({ id, item, price });
         updateCartSummary();
+        let total = 0;
+
+function updateCartTotal() {
+    const cartTotalElement = document.getElementById("cart-total");
+    cartTotalElement.textContent = `Total: R$ ${total.toFixed(2)}`;
+}
     }
 
     function updateCartSummary() {
