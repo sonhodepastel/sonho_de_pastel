@@ -2,7 +2,7 @@
   "name": "Cardápio Interativo",
   "short_name": "Cardápio",
   "description": "Um aplicativo interativo para realizar pedidos online.",
-  "start_url": "index.html",
+  "start_url": "anima.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ff0000",
