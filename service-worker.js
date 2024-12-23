@@ -1,7 +1,7 @@
 const CACHE_NAME = "cardapio-cache-v1";
 const urlsToCache = [
   "/",
-  "/index.html",
+  "/anima.html",
   "/manifest.json",
   "/icon-192x192.png",
   "/icon-512x512.png",
